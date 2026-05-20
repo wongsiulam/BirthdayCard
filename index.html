@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>生日快乐</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="sky" aria-hidden="true"></canvas>
+
+  <main class="page">
+    <section class="hero" aria-label="生日祝福">
+      <div class="moon" aria-hidden="true">
+        <span></span>
+      </div>
+
+      <div class="hero-copy">
+        <p class="eyebrow">For the one who makes ordinary days brighter</p>
+        <h1>生日快乐，<span>小寿星</span></h1>
+        <p class="message">
+          今天把所有温柔的光都借给你。愿你新的一岁，醒来有期待，
+          出门有晴天，身边有热爱，心里永远有一小片自由而明亮的宇宙。
+        </p>
+      </div>
+
+      <div class="cake-wrap" aria-label="生日蛋糕">
+        <div class="cake">
+          <button class="flame" id="wishButton" type="button" aria-label="点击许愿"></button>
+          <div class="candle"></div>
+          <div class="cream cream-top"></div>
+          <div class="cake-layer layer-one">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="cream cream-mid"></div>
+          <div class="cake-layer layer-two">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="plate"></div>
+        </div>
+        <p class="hint" id="hintText">点一下烛光，替今天许个愿</p>
+      </div>
+    </section>
+
+    <section class="notes" aria-label="送给你的祝福">
+      <article>
+        <strong>愿望一</strong>
+        <p>愿你被生活偏爱，也有底气偏爱自己。</p>
+      </article>
+      <article>
+        <strong>愿望二</strong>
+        <p>愿你每一次认真，都能被世界温柔接住。</p>
+      </article>
+      <article>
+        <strong>愿望三</strong>
+        <p>愿我还有很多机会，把开心送到你面前。</p>
+      </article>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    愿望收到。今晚的星星会替你保管它。
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
