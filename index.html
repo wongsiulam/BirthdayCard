@@ -9,58 +9,78 @@
 <body>
   <canvas id="sky" aria-hidden="true"></canvas>
 
-  <main class="page">
+  <main class="shell">
     <section class="hero" aria-label="生日祝福">
-      <div class="moon" aria-hidden="true">
-        <span></span>
-      </div>
-
       <div class="hero-copy">
-        <p class="eyebrow">For the one who makes ordinary days brighter</p>
-        <h1>生日快乐，<span>小寿星</span></h1>
-        <p class="message">
-          今天把所有温柔的光都借给你。愿你新的一岁，醒来有期待，
-          出门有晴天，身边有热爱，心里永远有一小片自由而明亮的宇宙。
+        <p class="kicker">A small universe built just for you</p>
+        <h1>生日快乐</h1>
+        <p class="lead">
+          今天不赶路，不计算明天，只把这束光交给你。
+          愿新的一岁，所有重要的事都慢慢靠近你。
         </p>
       </div>
 
-      <div class="cake-wrap" aria-label="生日蛋糕">
-        <div class="cake">
-          <button class="flame" id="wishButton" type="button" aria-label="点击许愿"></button>
-          <div class="candle"></div>
-          <div class="cream cream-top"></div>
-          <div class="cake-layer layer-one">
-            <span></span><span></span><span></span>
+      <div class="orbital-stage" aria-label="互动生日卡片">
+        <div class="halo"></div>
+        <div class="planet">
+          <div class="cake">
+            <button class="flame" id="wishButton" type="button" aria-label="点亮许愿"></button>
+            <span class="candle"></span>
+            <span class="cake-top"></span>
+            <span class="cake-body"></span>
+            <span class="cake-shadow"></span>
           </div>
-          <div class="cream cream-mid"></div>
-          <div class="cake-layer layer-two">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="plate"></div>
         </div>
-        <p class="hint" id="hintText">点一下烛光，替今天许个愿</p>
+        <p class="stage-note" id="hintText">点一下烛光，开启今日限定星河</p>
       </div>
     </section>
 
-    <section class="notes" aria-label="送给你的祝福">
-      <article>
-        <strong>愿望一</strong>
-        <p>愿你被生活偏爱，也有底气偏爱自己。</p>
-      </article>
-      <article>
-        <strong>愿望二</strong>
-        <p>愿你每一次认真，都能被世界温柔接住。</p>
-      </article>
-      <article>
-        <strong>愿望三</strong>
-        <p>愿我还有很多机会，把开心送到你面前。</p>
-      </article>
+    <section class="wish-panel" aria-label="编辑并发送愿望">
+      <div class="panel-copy">
+        <p class="kicker">Make a wish</p>
+        <h2>把愿望写下来</h2>
+        <p>
+          她可以在这里改成自己的生日愿望。点击发送后，
+          这条愿望会通过邮件转发给你，像一封只属于今天的小信。
+        </p>
+      </div>
+
+      <form id="wishForm" class="wish-form">
+        <input type="hidden" name="_subject" value="她在生日页面写下了一个愿望" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off" />
+
+        <label>
+          <span>她的名字</span>
+          <input name="name" type="text" maxlength="24" placeholder="可以写昵称" />
+        </label>
+
+        <label>
+          <span>她的愿望</span>
+          <textarea
+            id="wishText"
+            name="wish"
+            maxlength="280"
+            required
+            placeholder="比如：希望今年每一天都更勇敢一点，也更快乐一点。"
+          ></textarea>
+        </label>
+
+        <div class="quick-wishes" aria-label="快速填入愿望">
+          <button type="button" data-wish="希望新的一岁，有热爱的事，有想见的人，也有说走就走的好运。">温柔版</button>
+          <button type="button" data-wish="希望今年大胆一点，漂亮一点，被偏爱一点，也更喜欢自己一点。">闪亮版</button>
+          <button type="button" data-wish="希望愿望不止今天有效，快乐也不止生日限定。">浪漫版</button>
+        </div>
+
+        <button class="send-button" id="sendButton" type="submit">
+          发送愿望
+        </button>
+        <p class="form-note" id="formNote">还差你的收件邮箱，配置后就能真正发送。</p>
+      </form>
     </section>
   </main>
 
-  <div class="toast" id="toast" role="status" aria-live="polite">
-    愿望收到。今晚的星星会替你保管它。
-  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="script.js"></script>
 </body>
