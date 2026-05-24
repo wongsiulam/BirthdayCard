@@ -9,6 +9,8 @@ const form = document.querySelector("#wishForm");
 const wishText = document.querySelector("#wishText");
 const sendButton = document.querySelector("#sendButton");
 const formNote = document.querySelector("#formNote");
+const pageField = document.querySelector("#pageField");
+const sentAtField = document.querySelector("#sentAtField");
 
 let width = 0;
 let height = 0;
@@ -119,30 +121,20 @@ function dropPetal() {
   petal.addEventListener("animationend", () => petal.remove());
 }
 
-function configureFormState() {
-  if (OWNER_EMAIL) {
-    formNote.textContent = "写好愿望后点击发送，我会收到一封邮件。";
-    return;
-  }
-
-  formNote.textContent = "还差你的收件邮箱，配置后就能真正发送。";
+function updateMetaFields() {
+  pageField.value = window.location.href;
+  sentAtField.value = new Date().toLocaleString();
 }
 
 async function sendWish(event) {
   event.preventDefault();
-
-  if (!OWNER_EMAIL) {
-    showToast("还没有配置收件邮箱，把你的邮箱发给我后我来接上。");
-    return;
-  }
+  updateMetaFields();
 
   sendButton.disabled = true;
   sendButton.textContent = "正在发送...";
   formNote.textContent = "愿望正在穿过星光。";
 
   const formData = new FormData(form);
-  formData.append("page", window.location.href);
-  formData.append("sent_at", new Date().toLocaleString());
 
   try {
     const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(OWNER_EMAIL)}`, {
@@ -155,13 +147,14 @@ async function sendWish(event) {
       throw new Error("Send failed");
     }
 
-    showToast("发送成功。这个愿望已经飞到邮箱里了。");
-    formNote.textContent = "发送成功，愿望已收藏。";
+    showToast("发送成功。这个愿望已经飞到你的邮箱里了。");
+    formNote.textContent = "发送成功，你会在邮箱里看到她写的内容。";
     form.reset();
     burstSparkles(width * 0.5, height * 0.72, 64);
   } catch (error) {
-    showToast("暂时没有发送成功，可以稍后再试。");
-    formNote.textContent = "发送失败，可能是邮箱首次确认还没完成。";
+    showToast("自动发送失败，正在打开备用发送页面。");
+    formNote.textContent = "如果是第一次使用，请在邮箱里点 FormSubmit 的确认邮件。";
+    form.submit();
   } finally {
     sendButton.disabled = false;
     sendButton.textContent = "发送愿望";
@@ -179,8 +172,8 @@ window.addEventListener("resize", resize);
 wishButton.addEventListener("click", makeWish, { once: true });
 form.addEventListener("submit", sendWish);
 
-configureFormState();
 resize();
+updateMetaFields();
 animate();
 
 window.setInterval(() => {

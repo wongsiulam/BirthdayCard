@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>生日快乐</title>
-  <link rel="stylesheet" href="styles.css?v=20260524" />
+  <link rel="stylesheet" href="styles.css?v=20260524b" />
 </head>
 <body>
   <canvas id="sky" aria-hidden="true"></canvas>
@@ -40,26 +40,29 @@
         <p class="kicker">Make a wish</p>
         <h2>把愿望写下来</h2>
         <p>
-          她可以在这里改成自己的生日愿望。点击发送后，
-          这条愿望会通过邮件转发给你，像一封只属于今天的小信。
+          她可以在这里写下自己的生日愿望。点击发送后，
+          你会在邮箱里收到她写下的内容。
         </p>
       </div>
 
-      <form id="wishForm" class="wish-form">
+      <form
+        id="wishForm"
+        class="wish-form"
+        action="https://formsubmit.co/wongsiulam@foxmail.com"
+        method="POST"
+      >
         <input type="hidden" name="_subject" value="她在生日页面写下了一个愿望" />
         <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="页面链接" id="pageField" value="" />
+        <input type="hidden" name="发送时间" id="sentAtField" value="" />
         <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off" />
 
         <label>
-          <span>她的名字</span>
-          <input name="name" type="text" maxlength="24" placeholder="可以写昵称" />
-        </label>
-
-        <label>
-          <span>她的愿望</span>
+          <span>愿望内容</span>
           <textarea
             id="wishText"
-            name="wish"
+            name="愿望内容"
             maxlength="280"
             required
             placeholder="比如：希望今年每一天都更勇敢一点，也更快乐一点。"
@@ -75,13 +78,13 @@
         <button class="send-button" id="sendButton" type="submit">
           发送愿望
         </button>
-        <p class="form-note" id="formNote">还差你的收件邮箱，配置后就能真正发送。</p>
+        <p class="form-note" id="formNote">写好愿望后点击发送，你会收到一封邮件。</p>
       </form>
     </section>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="script.js?v=20260524"></script>
+  <script src="script.js?v=20260524b"></script>
 </body>
 </html>
