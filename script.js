@@ -9,8 +9,6 @@ const form = document.querySelector("#wishForm");
 const wishText = document.querySelector("#wishText");
 const sendButton = document.querySelector("#sendButton");
 const formNote = document.querySelector("#formNote");
-const pageField = document.querySelector("#pageField");
-const sentAtField = document.querySelector("#sentAtField");
 
 let width = 0;
 let height = 0;
@@ -121,14 +119,8 @@ function dropPetal() {
   petal.addEventListener("animationend", () => petal.remove());
 }
 
-function updateMetaFields() {
-  pageField.value = window.location.href;
-  sentAtField.value = new Date().toLocaleString();
-}
-
 async function sendWish(event) {
   event.preventDefault();
-  updateMetaFields();
 
   sendButton.disabled = true;
   sendButton.textContent = "正在发送...";
@@ -173,7 +165,6 @@ wishButton.addEventListener("click", makeWish, { once: true });
 form.addEventListener("submit", sendWish);
 
 resize();
-updateMetaFields();
 animate();
 
 window.setInterval(() => {
