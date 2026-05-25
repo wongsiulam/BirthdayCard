@@ -62,12 +62,11 @@
           </div>
 
           <!-- 移入弹窗的许愿表单 -->
-          <form id="wishForm" class="modal-wish-form" action="https://formsubmit.co/wongsiulam@foxmail.com"
-            method="POST">
-            <input type="hidden" name="_subject" value="她在生日页面写下了一个愿望" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off" />
+          <form id="wishForm" class="modal-wish-form" action="https://api.web3forms.com/submit" method="POST">
+            <!-- TODO: 请在此处填写你从 Web3Forms 获取的 Access Key -->
+            <input type="hidden" name="access_key" value="8ac134e4-3b04-4bcd-8d71-32aa2b07e4f5" />
+            <input type="hidden" name="subject" value="她在生日页面写下了一个愿望" />
+            <input type="checkbox" name="botcheck" class="honeypot" style="display: none;" />
 
             <div class="modal-form-group">
               <textarea id="wishText" name="愿望内容" maxlength="280" required placeholder="在此写下你的生日愿望..."></textarea>

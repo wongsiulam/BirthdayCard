@@ -132,26 +132,33 @@ async function sendWish(event) {
   formNote.textContent = "愿望正在穿过星光。";
 
   const formData = new FormData(form);
+  const object = Object.fromEntries(formData);
+  const json = JSON.stringify(object);
 
   try {
-    const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(OWNER_EMAIL)}`, {
+    const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      headers: { Accept: "application/json" },
-      body: formData
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: json
     });
 
-    if (!response.ok) {
-      throw new Error("Send failed");
-    }
+    const result = await response.json();
 
-    showToast("发送成功。这个愿望已经飞到你的邮箱里了。");
-    formNote.textContent = "发送成功，你会在邮箱里看到她写的内容。";
-    form.reset();
-    closeModal();
-    burstSparkles(width * 0.5, height * 0.5, 96);
+    if (response.status === 200) {
+      showToast("发送成功。这个愿望已经飞到你的邮箱里了。");
+      formNote.textContent = "发送成功，你会在邮箱里看到她写的内容。";
+      form.reset();
+      closeModal();
+      burstSparkles(width * 0.5, height * 0.5, 96);
+    } else {
+      throw new Error(result.message || "Send failed");
+    }
   } catch (error) {
     showToast("自动发送失败，正在打开备用发送页面。");
-    formNote.textContent = "如果是第一次使用，请在邮箱里点 FormSubmit 的确认邮件。";
+    formNote.textContent = "请确认您已在网页中正确填写了 Web3Forms 的 Access Key。";
     form.submit();
   } finally {
     sendButton.disabled = false;
