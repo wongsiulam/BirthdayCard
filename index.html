@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>生日快乐</title>
+  <title>静静老师，生日快乐</title>
   <link rel="stylesheet" href="styles.css?v=20260524b" />
 </head>
+
 <body>
   <canvas id="sky" aria-hidden="true"></canvas>
 
@@ -13,10 +15,10 @@
     <section class="hero" aria-label="生日祝福">
       <div class="hero-copy">
         <p class="kicker">A small universe built just for you</p>
+        <h1>静静老师</h1>
         <h1>生日快乐</h1>
         <p class="lead">
-          今天不赶路，不计算明天，只把这束光交给你。
-          愿新的一岁，所有重要的事都慢慢靠近你。
+          愿你新的一岁顺顺利利，也顺便多喜欢我一点哦。
         </p>
       </div>
 
@@ -31,58 +33,57 @@
             <span class="cake-shadow"></span>
           </div>
         </div>
-        <p class="stage-note" id="hintText">点一下烛光，开启今日限定星河</p>
+        <p class="stage-note" id="hintText">点一下烛光，开启有惊喜哦</p>
       </div>
     </section>
 
-    <section class="wish-panel" aria-label="编辑并发送愿望">
-      <div class="panel-copy">
-        <p class="kicker">Make a wish</p>
-        <h2>把愿望写下来</h2>
-        <p>
-          她可以在这里写下自己的生日愿望。点击发送后，
-          你会在邮箱里收到她写下的内容。
-        </p>
-      </div>
-
-      <form
-        id="wishForm"
-        class="wish-form"
-        action="https://formsubmit.co/wongsiulam@foxmail.com"
-        method="POST"
-      >
-        <input type="hidden" name="_subject" value="她在生日页面写下了一个愿望" />
-        <input type="hidden" name="_template" value="table" />
-        <input type="hidden" name="_captcha" value="false" />
-        <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off" />
-
-        <label>
-          <span>愿望内容</span>
-          <textarea
-            id="wishText"
-            name="愿望内容"
-            maxlength="280"
-            required
-            placeholder="比如：希望今年每一天都更勇敢一点，也更快乐一点。"
-          ></textarea>
-        </label>
-
-        <div class="quick-wishes" aria-label="快速填入愿望">
-          <button type="button" data-wish="希望新的一岁，有热爱的事，有想见的人，也有说走就走的好运。">温柔版</button>
-          <button type="button" data-wish="希望今年大胆一点，漂亮一点，被偏爱一点，也更喜欢自己一点。">闪亮版</button>
-          <button type="button" data-wish="希望愿望不止今天有效，快乐也不止生日限定。">浪漫版</button>
-        </div>
-
-        <button class="send-button" id="sendButton" type="submit">
-          发送愿望
-        </button>
-        <p class="form-note" id="formNote">写好愿望后点击发送，你会收到一封邮件。</p>
-      </form>
-    </section>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <!-- 生日寄语弹窗 -->
+  <div class="modal-backdrop" id="wishModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close-btn" id="modalCloseBtn" type="button" aria-label="关闭弹窗">&times;</button>
+      <div class="modal-content">
+        <div class="modal-image-col">
+          <img src="Gemini_Generated_Image_zcqngtzcqngtzcqn.png" alt="生日卡片插图" class="modal-img" />
+        </div>
+        <div class="modal-text-col">
+          <div class="modal-body">
+            <span class="modal-kicker">Birthday Blessing</span>
+            <h3 class="modal-title">给静静老师</h3>
+            <div class="modal-blessing-lines">
+              <p>愿星河在你的眼眸里闪烁，</p>
+              <p>愿每一缕晚风都带去温暖的问候。</p>
+              <p>新的一岁，愿你活成自己热爱的模样，</p>
+              <p class="modal-highlight">所有美好与偏爱，都如期而至。</p>
+            </div>
+          </div>
+
+          <!-- 移入弹窗的许愿表单 -->
+          <form id="wishForm" class="modal-wish-form" action="https://formsubmit.co/wongsiulam@foxmail.com"
+            method="POST">
+            <input type="hidden" name="_subject" value="她在生日页面写下了一个愿望" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off" />
+
+            <div class="modal-form-group">
+              <textarea id="wishText" name="愿望内容" maxlength="280" required placeholder="在此写下你的生日愿望..."></textarea>
+            </div>
+
+            <button class="modal-action-btn" id="sendButton" type="submit">
+              发送愿望并吹灭烛火
+            </button>
+            <p class="modal-form-note" id="formNote"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js?v=20260524b"></script>
 </body>
+
 </html>

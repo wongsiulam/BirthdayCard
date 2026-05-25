@@ -86,10 +86,10 @@ p {
 }
 
 h1 {
-  margin-bottom: 24px;
-  font-size: clamp(4.4rem, 13vw, 10.2rem);
-  line-height: 0.88;
-  letter-spacing: 0;
+  margin-bottom: 16px;
+  font-size: clamp(3rem, 6.5vw, 5.2rem);
+  line-height: 1.05;
+  letter-spacing: 0.02em;
 }
 
 h2 {
@@ -258,57 +258,47 @@ textarea:focus-visible {
   line-height: 1.7;
 }
 
-.wish-panel {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1.15fr);
-  gap: clamp(22px, 5vw, 58px);
-  align-items: start;
-  padding: clamp(28px, 5vw, 54px);
-  border: 1px solid var(--line);
-  border-radius: 28px;
-  background: var(--paper);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(20px);
+/* 移入弹窗的表单样式 */
+.modal-wish-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
 }
 
-.panel-copy p:not(.kicker) {
-  color: var(--muted);
-  font-size: 1.05rem;
-  line-height: 1.9;
-}
-
-.wish-form {
-  display: grid;
-  gap: 16px;
-}
-
-label {
-  display: grid;
-  gap: 9px;
-  color: #594d63;
-  font-weight: 800;
-}
-
-input,
-textarea {
+.modal-form-group {
   width: 100%;
-  border: 1px solid rgba(90, 74, 102, 0.14);
-  border-radius: 18px;
+}
+
+.modal-wish-form textarea {
+  width: 100%;
+  min-height: 82px;
+  max-height: 120px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  line-height: 1.6;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.76);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(90, 74, 102, 0.12);
+  border-radius: 14px;
+  resize: none;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.25s, background-color 0.25s;
 }
 
-input {
-  height: 52px;
-  padding: 0 16px;
+.modal-wish-form textarea:focus {
+  outline: none;
+  border-color: rgba(255, 95, 143, 0.5);
+  background: rgba(255, 255, 255, 0.9);
 }
 
-textarea {
-  min-height: 160px;
-  resize: vertical;
-  padding: 16px;
-  line-height: 1.7;
+.modal-form-note {
+  min-height: 18px;
+  margin: -4px 0 0;
+  font-size: 0.78rem;
+  color: #866377;
+  text-align: center;
+  line-height: 1.4;
 }
 
 .honeypot {
@@ -317,44 +307,6 @@ textarea {
   width: 1px;
   height: 1px;
   opacity: 0;
-}
-
-.quick-wishes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.quick-wishes button {
-  min-height: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  border-radius: 999px;
-  padding: 0 14px;
-  color: #5c4960;
-  background: rgba(255, 255, 255, 0.62);
-}
-
-.send-button {
-  min-height: 56px;
-  border: 0;
-  border-radius: 18px;
-  color: #ffffff;
-  font-weight: 900;
-  background: linear-gradient(135deg, #ff5f8f, #ff9d6f 52%, #56cfc0);
-  box-shadow: 0 18px 36px rgba(255, 95, 143, 0.24);
-}
-
-.send-button:disabled {
-  cursor: wait;
-  filter: saturate(0.68);
-  opacity: 0.78;
-}
-
-.form-note {
-  min-height: 24px;
-  margin: -4px 0 0;
-  color: #866377;
-  line-height: 1.6;
 }
 
 .toast {
@@ -394,20 +346,24 @@ textarea {
 }
 
 @keyframes breathe {
+
   0%,
   100% {
     transform: scale(0.96) rotate(0deg);
   }
+
   50% {
     transform: scale(1.02) rotate(7deg);
   }
 }
 
 @keyframes flicker {
+
   0%,
   100% {
     transform: translateX(-50%) rotate(-3deg) scale(1);
   }
+
   50% {
     transform: translateX(-50%) rotate(4deg) scale(1.08);
   }
@@ -465,9 +421,252 @@ textarea {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .halo,
   .flame,
   .petal {
     animation: none;
+  }
+}
+
+/* ==========================================
+   生日寄语弹窗样式
+   ========================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(33, 29, 43, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  position: relative;
+  width: min(840px, 92vw);
+  height: 500px; /* 电脑端锁定高度 */
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 24px;
+  box-shadow: 0 40px 100px rgba(77, 54, 95, 0.22);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  overflow: hidden;
+  transform: scale(0.92) translateY(24px);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-backdrop.active .modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  transition: background-color 0.25s, color 0.25s, transform 0.2s;
+}
+
+.modal-close-btn:hover {
+  color: var(--rose);
+  background-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.08);
+}
+
+.modal-close-btn:active {
+  transform: scale(0.95);
+}
+
+.modal-content {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-image-col {
+  width: 375px; /* 3:4 aspect ratio */
+  height: 100%;
+  flex: none;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.modal-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-text-col {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto; /* 右侧独立滚动 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 36px 32px;
+  gap: 20px;
+  
+  /* 隐藏 Firefox & IE/Edge 的滚动条 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* 隐藏 Chrome/Safari 的滚动条 */
+.modal-text-col::-webkit-scrollbar {
+  display: none;
+}
+
+.modal-body {
+  margin-bottom: 0;
+}
+
+.modal-kicker {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--rose);
+  text-transform: uppercase;
+}
+
+.modal-title {
+  margin: 0 0 20px 0;
+  font-size: clamp(1.8rem, 3.5vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.modal-blessing-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-blessing-lines p {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  line-height: 1.7;
+  color: #4a3e54;
+}
+
+.modal-highlight {
+  font-weight: 700;
+  color: var(--rose);
+}
+
+.modal-sig {
+  margin: 22px 0 0 0;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--muted);
+  text-align: right;
+}
+
+.modal-action-btn {
+  width: 100%;
+  min-height: 50px;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff5f8f, #ffb56b);
+  border: 0;
+  border-radius: 14px;
+  box-shadow: 0 12px 24px rgba(255, 95, 143, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s;
+}
+
+.modal-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px rgba(255, 95, 143, 0.3);
+  filter: brightness(1.04);
+}
+
+.modal-action-btn:active {
+  transform: translateY(0);
+}
+
+/* ==========================================
+   弹窗响应式样式
+   ========================================== */
+@media (max-width: 768px) {
+  .modal-card {
+    width: 90%;
+    height: auto; /* 移动端自适应高度 */
+    max-height: 80vh;
+    border-radius: 20px;
+  }
+
+  .modal-content {
+    flex-direction: column;
+    overflow-y: auto; /* 移动端全局滚动 */
+    height: 100%;
+  }
+
+  .modal-image-col {
+    flex: none;
+    width: 100%;
+    height: 220px;
+  }
+
+  .modal-text-col {
+    flex: none;
+    height: auto;
+    overflow-y: visible; /* 禁用内部滚动 */
+    padding: 24px 20px;
+  }
+
+  .modal-body {
+    margin-bottom: 20px;
+  }
+
+  .modal-title {
+    margin-bottom: 12px;
+  }
+
+  .modal-blessing-lines {
+    gap: 8px;
+  }
+
+  .modal-blessing-lines p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .modal-sig {
+    margin-top: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-backdrop,
+  .modal-card {
+    transition: none !important;
   }
 }

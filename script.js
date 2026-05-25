@@ -9,6 +9,8 @@ const form = document.querySelector("#wishForm");
 const wishText = document.querySelector("#wishText");
 const sendButton = document.querySelector("#sendButton");
 const formNote = document.querySelector("#formNote");
+const modal = document.querySelector("#wishModal");
+const modalCloseBtn = document.querySelector("#modalCloseBtn");
 
 let width = 0;
 let height = 0;
@@ -97,8 +99,8 @@ function burstSparkles(originX, originY, count = 84) {
 
 function makeWish() {
   wishButton.classList.add("off");
-  hintText.textContent = "星河已开启，今天的愿望会被认真收藏";
-  showToast("今天的第一束光已经点亮。");
+  hintText.textContent = "今天的愿望会被认真收藏哦";
+  showToast("今天的第一束光已经点亮啦。");
 
   const rect = wishButton.getBoundingClientRect();
   burstSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2);
@@ -106,6 +108,9 @@ function makeWish() {
   for (let i = 0; i < 34; i += 1) {
     window.setTimeout(dropPetal, i * 52);
   }
+
+  // 1.2秒后显示生日寄语弹窗
+  window.setTimeout(openModal, 1200);
 }
 
 function dropPetal() {
@@ -142,7 +147,8 @@ async function sendWish(event) {
     showToast("发送成功。这个愿望已经飞到你的邮箱里了。");
     formNote.textContent = "发送成功，你会在邮箱里看到她写的内容。";
     form.reset();
-    burstSparkles(width * 0.5, height * 0.72, 64);
+    closeModal();
+    burstSparkles(width * 0.5, height * 0.5, 96);
   } catch (error) {
     showToast("自动发送失败，正在打开备用发送页面。");
     formNote.textContent = "如果是第一次使用，请在邮箱里点 FormSubmit 的确认邮件。";
@@ -159,6 +165,43 @@ document.querySelectorAll("[data-wish]").forEach((button) => {
     wishText.focus();
   });
 });
+
+function openModal() {
+  if (modal) {
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden"; // 阻止背景滚动
+    // 弹窗展开动画完成后，自动聚焦输入框
+    window.setTimeout(() => {
+      if (wishText) {
+        wishText.focus();
+      }
+    }, 450);
+  }
+}
+
+function closeModal() {
+  if (modal) {
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = ""; // 恢复背景滚动
+  }
+}
+
+if (modalCloseBtn) {
+  modalCloseBtn.addEventListener("click", closeModal);
+}
+
+if (modal) {
+  modal.addEventListener("click", (e) => {
+    // 点击背景遮罩处关闭弹窗
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+}
+
+
 
 window.addEventListener("resize", resize);
 wishButton.addEventListener("click", makeWish, { once: true });
