@@ -259,7 +259,7 @@ function copyGiftCode() {
     const textToCopy = giftCode.textContent;
     navigator.clipboard.writeText(textToCopy)
       .then(() => {
-        showToast("兑换码已成功复制到剪贴板。");
+        showToast("暗号已成功复制到剪贴板。");
         const originalText = copyCodeBtn.textContent;
         copyCodeBtn.textContent = "已复制！";
         copyCodeBtn.style.background = "rgba(110, 231, 216, 0.25)";
@@ -270,7 +270,7 @@ function copyGiftCode() {
         }, 2200);
       })
       .catch(() => {
-        showToast("复制失败，请手动长按复制。");
+        showToast("复制失败，请手动长按复制暗号。");
       });
   }
 }
