@@ -82,6 +82,54 @@
     </div>
   </div>
 
+  <!-- 礼物惊喜弹窗 -->
+  <div class="modal-backdrop gift-backdrop" id="giftModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="gift-glow" aria-hidden="true"></div>
+    <div class="gift-card">
+      <button class="modal-close-btn" id="giftCloseBtn" type="button" aria-label="关闭礼物">&times;</button>
+      <div class="gift-ribbon" aria-hidden="true">
+        <svg viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 30 C30 10 10 20 25 35 C35 45 45 35 50 30 Z" fill="url(#ribbonGrad)" />
+          <path d="M50 30 C70 10 90 20 75 35 C65 45 55 35 50 30 Z" fill="url(#ribbonGrad)" />
+          <path d="M50 30 C45 45 30 55 20 58" stroke="url(#ribbonGrad)" stroke-width="5" stroke-linecap="round" />
+          <path d="M50 30 C55 45 70 55 80 58" stroke="url(#ribbonGrad)" stroke-width="5" stroke-linecap="round" />
+          <circle cx="50" cy="30" r="7" fill="#ffd77a" />
+          <defs>
+            <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff5f8f" />
+              <stop offset="100%" stop-color="#ffb56b" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      
+      <div class="gift-body">
+        <span class="gift-kicker">✨ Special Birthday Surprise ✨</span>
+        <h3 class="gift-title">送给静静老师</h3>
+        <p class="gift-subtitle">愿所有美好与偏爱，都如期而至</p>
+        
+        <div class="gift-main-box">
+          <div class="gift-type-tag">专属卡券</div>
+          <div class="gift-name">优酷 / 爱奇艺会员</div>
+          <div class="gift-duration">一个月免费体验</div>
+          
+          <div class="gift-code-area">
+            <div class="gift-code-val" id="giftCode">VIP-2026-HAPPY-BIRTHDAY</div>
+            <button class="gift-copy-btn" id="copyCodeBtn" type="button">
+              复制兑换码
+            </button>
+          </div>
+        </div>
+        
+        <p class="gift-note">提示：你可以凭此截图或复制的兑换码向我兑换会员卡哦！</p>
+        
+        <button class="gift-confirm-btn" id="claimGiftBtn" type="button">
+          收下心意，开启快乐
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="script.js?v=20260524b"></script>
 </body>
 

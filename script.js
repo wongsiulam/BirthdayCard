@@ -12,6 +12,13 @@ const formNote = document.querySelector("#formNote");
 const modal = document.querySelector("#wishModal");
 const modalCloseBtn = document.querySelector("#modalCloseBtn");
 
+// 礼物弹窗相关 DOM 元素
+const giftModal = document.querySelector("#giftModal");
+const giftCloseBtn = document.querySelector("#giftCloseBtn");
+const claimGiftBtn = document.querySelector("#claimGiftBtn");
+const copyCodeBtn = document.querySelector("#copyCodeBtn");
+const giftCode = document.querySelector("#giftCode");
+
 let width = 0;
 let height = 0;
 let stars = [];
@@ -82,7 +89,7 @@ function showToast(message) {
 }
 
 function burstSparkles(originX, originY, count = 84) {
-  sparkles = Array.from({ length: count }, () => {
+  const newSparkles = Array.from({ length: count }, () => {
     const angle = Math.random() * Math.PI * 2;
     const speed = Math.random() * 5.2 + 1.1;
     return {
@@ -95,6 +102,32 @@ function burstSparkles(originX, originY, count = 84) {
       hue: Math.random() > 0.45 ? "255, 255, 255" : "255, 181, 107"
     };
   });
+  sparkles = sparkles.concat(newSparkles);
+}
+
+// 绚丽多彩纸屑与金星喷洒动效
+function burstColorfulConfetti(originX, originY, count = 120) {
+  const colors = [
+    "255, 95, 143",  // 玫瑰粉
+    "255, 181, 107", // 蜜桃橘
+    "110, 231, 216", // 蒂芙尼绿
+    "141, 125, 255", // 幻彩紫
+    "255, 223, 120"  // 闪耀金
+  ];
+  const newSparkles = Array.from({ length: count }, () => {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 7.5 + 1.8;
+    return {
+      x: originX,
+      y: originY,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 2.2,
+      r: Math.random() * 3.2 + 1.2,
+      life: Math.random() * 0.62 + 0.58,
+      hue: colors[Math.floor(Math.random() * colors.length)]
+    };
+  });
+  sparkles = sparkles.concat(newSparkles);
 }
 
 function makeWish() {
@@ -148,11 +181,16 @@ async function sendWish(event) {
     const result = await response.json();
 
     if (response.status === 200) {
-      showToast("发送成功。这个愿望已经飞到你的邮箱里了。");
-      formNote.textContent = "发送成功，你会在邮箱里看到她写的内容。";
+      showToast("发送成功。你的愿望已经飞到邮箱里了。");
+      formNote.textContent = "发送成功。";
       form.reset();
       closeModal();
-      burstSparkles(width * 0.5, height * 0.5, 96);
+      
+      // 延迟 600ms 在许愿弹窗淡出后打开礼物弹窗，并喷洒满屏彩屑
+      window.setTimeout(() => {
+        openGiftModal();
+        burstColorfulConfetti(width * 0.5, height * 0.45, 140);
+      }, 600);
     } else {
       throw new Error(result.message || "Send failed");
     }
@@ -195,6 +233,48 @@ function closeModal() {
   }
 }
 
+// 开启礼物惊喜弹窗
+function openGiftModal() {
+  if (giftModal) {
+    giftModal.classList.add("active");
+    giftModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden"; // 阻止背景滚动
+  }
+}
+
+// 关闭礼物惊喜弹窗
+function closeGiftModal() {
+  if (giftModal) {
+    giftModal.classList.remove("active");
+    giftModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = ""; // 恢复背景滚动
+    // 关闭时来一次轻微星尘爆发
+    burstSparkles(width * 0.5, height * 0.5, 36);
+  }
+}
+
+// 复制兑换码功能
+function copyGiftCode() {
+  if (giftCode) {
+    const textToCopy = giftCode.textContent;
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        showToast("兑换码已成功复制到剪贴板。");
+        const originalText = copyCodeBtn.textContent;
+        copyCodeBtn.textContent = "已复制！";
+        copyCodeBtn.style.background = "rgba(110, 231, 216, 0.25)";
+        
+        window.setTimeout(() => {
+          copyCodeBtn.textContent = originalText;
+          copyCodeBtn.style.background = "";
+        }, 2200);
+      })
+      .catch(() => {
+        showToast("复制失败，请手动长按复制。");
+      });
+  }
+}
+
 if (modalCloseBtn) {
   modalCloseBtn.addEventListener("click", closeModal);
 }
@@ -208,7 +288,29 @@ if (modal) {
   });
 }
 
+// 礼物弹窗相关事件绑定
+if (giftCloseBtn) {
+  giftCloseBtn.addEventListener("click", closeGiftModal);
+}
 
+if (claimGiftBtn) {
+  claimGiftBtn.addEventListener("click", () => {
+    showToast("收到啦，生日要一直开开心心哦！");
+    closeGiftModal();
+  });
+}
+
+if (giftModal) {
+  giftModal.addEventListener("click", (e) => {
+    if (e.target === giftModal) {
+      closeGiftModal();
+    }
+  });
+}
+
+if (copyCodeBtn) {
+  copyCodeBtn.addEventListener("click", copyGiftCode);
+}
 
 window.addEventListener("resize", resize);
 wishButton.addEventListener("click", makeWish, { once: true });
