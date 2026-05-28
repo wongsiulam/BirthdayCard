@@ -185,7 +185,7 @@ async function sendWish(event) {
       formNote.textContent = "发送成功。";
       form.reset();
       closeModal();
-      
+
       // 延迟 600ms 在许愿弹窗淡出后打开礼物弹窗，并喷洒满屏彩屑
       window.setTimeout(() => {
         openGiftModal();
@@ -263,7 +263,7 @@ function copyGiftCode() {
         const originalText = copyCodeBtn.textContent;
         copyCodeBtn.textContent = "已复制！";
         copyCodeBtn.style.background = "rgba(110, 231, 216, 0.25)";
-        
+
         window.setTimeout(() => {
           copyCodeBtn.textContent = originalText;
           copyCodeBtn.style.background = "";
@@ -324,3 +324,89 @@ window.setInterval(() => {
     dropPetal();
   }
 }, 1300);
+
+// ==========================================
+// 背景音乐播放与控制逻辑
+// ==========================================
+const bgMusic = document.querySelector("#bgMusic");
+const musicToggle = document.querySelector("#musicToggle");
+
+if (bgMusic && musicToggle) {
+  // 设置背景音乐音量为 40%，使其更加温和适中
+  bgMusic.volume = 0.4;
+
+  let isPlaying = false;
+  let isFirstPlay = true;
+
+  const playMusic = () => {
+    if (isFirstPlay) {
+      try {
+        bgMusic.currentTime = 4;
+      } catch (e) {
+        console.error("Failed to set currentTime:", e);
+      }
+    }
+    bgMusic.play()
+      .then(() => {
+        isPlaying = true;
+        isFirstPlay = false;
+        musicToggle.classList.add("playing");
+        musicToggle.classList.remove("paused");
+        // 成功播放后移除首屏交互监听
+        removeInteractionListeners();
+      })
+      .catch((err) => {
+        // 如果被浏览器策略拦截，则保持暂停图标
+        isPlaying = false;
+        musicToggle.classList.remove("playing");
+        musicToggle.classList.add("paused");
+      });
+  };
+
+  const pauseMusic = () => {
+    bgMusic.pause();
+    isPlaying = false;
+    musicToggle.classList.remove("playing");
+    musicToggle.classList.add("paused");
+  };
+
+  const toggleMusic = (e) => {
+    e.stopPropagation();
+    if (isPlaying) {
+      pauseMusic();
+    } else {
+      playMusic();
+    }
+  };
+
+  // 用户与页面首次产生任何交互时自动开始播放
+  const handleFirstInteraction = () => {
+    if (!isPlaying) {
+      playMusic();
+    }
+  };
+
+  const removeInteractionListeners = () => {
+    document.removeEventListener("click", handleFirstInteraction);
+    document.removeEventListener("touchstart", handleFirstInteraction);
+    document.removeEventListener("keydown", handleFirstInteraction);
+  };
+
+  // 监听首屏的交互，克服浏览器的 autoplay 限制
+  document.addEventListener("click", handleFirstInteraction);
+  document.addEventListener("touchstart", handleFirstInteraction);
+  document.addEventListener("keydown", handleFirstInteraction);
+
+  // 控制按钮点击切换状态
+  musicToggle.addEventListener("click", toggleMusic);
+
+  // 页面加载或就绪后立即尝试自动播放
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    setTimeout(playMusic, 300);
+  } else {
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(playMusic, 300);
+    });
+  }
+}
+

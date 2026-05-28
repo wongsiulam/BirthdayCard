@@ -11,6 +11,12 @@
 <body>
   <canvas id="sky" aria-hidden="true"></canvas>
 
+  <!-- 背景音乐与控制按钮 -->
+  <audio id="bgMusic" src="backgroundMusic.mp3" autoplay loop preload="auto"></audio>
+  <button id="musicToggle" class="music-toggle-btn playing" aria-label="播放/暂停背景音乐" type="button">
+    <span class="music-icon" aria-hidden="true">🎵</span>
+  </button>
+
   <main class="shell">
     <section class="hero" aria-label="生日祝福">
       <div class="hero-copy">
