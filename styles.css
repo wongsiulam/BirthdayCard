@@ -649,7 +649,7 @@ textarea:focus-visible {
   .modal-image-col {
     flex: none;
     width: 100%;
-    height: 200px;
+    height: 340px;
   }
 
   .modal-text-col {
