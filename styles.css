@@ -392,6 +392,17 @@ textarea:focus-visible {
     padding-bottom: 28px;
   }
 
+  .hero-copy {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+  .lead {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .orbital-stage {
     min-height: 440px;
   }
@@ -445,6 +456,8 @@ textarea:focus-visible {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
+  overflow-y: auto; /* 允许在内容溢出时进行视口滚动 */
+  padding: 20px 0;
 }
 
 .modal-backdrop.active {
@@ -456,6 +469,7 @@ textarea:focus-visible {
   position: relative;
   width: min(840px, 92vw);
   height: 500px; /* 电脑端锁定高度 */
+  margin: auto; /* 防止居中溢出时顶部被截断 */
   background: rgba(255, 255, 255, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 24px;
@@ -617,29 +631,38 @@ textarea:focus-visible {
    ========================================== */
 @media (max-width: 768px) {
   .modal-card {
-    width: 90%;
-    height: auto; /* 移动端自适应高度 */
-    max-height: 80vh;
+    width: min(540px, 92vw);
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
     border-radius: 20px;
   }
 
   .modal-content {
     flex-direction: column;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto; /* 移动端全局滚动 */
-    height: 100%;
+    -webkit-overflow-scrolling: touch;
   }
 
   .modal-image-col {
     flex: none;
     width: 100%;
-    height: 220px;
+    height: 200px;
   }
 
   .modal-text-col {
     flex: none;
     height: auto;
-    overflow-y: visible; /* 禁用内部滚动 */
     padding: 24px 20px;
+  }
+
+  .modal-close-btn {
+    top: 12px;
+    right: 12px;
+    background-color: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
   .modal-body {
@@ -719,6 +742,7 @@ textarea:focus-visible {
 .gift-card {
   position: relative;
   width: min(420px, 90vw);
+  margin: auto; /* 防止居中溢出时顶部被截断 */
   background: rgba(255, 255, 255, 0.78);
   border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 26px;
@@ -961,4 +985,60 @@ textarea:focus-visible {
 
 .gift-confirm-btn:active {
   transform: translateY(0);
+}
+
+/* ==========================================
+   超小屏幕及礼物弹窗移动端适配
+   ========================================== */
+@media (max-width: 480px) {
+  .cake {
+    transform: scale(0.78);
+  }
+  
+  .planet {
+    width: min(290px, 88vw);
+  }
+
+  .orbital-stage {
+    min-height: 380px;
+  }
+
+  .gift-card {
+    border-radius: 20px;
+  }
+
+  .gift-body {
+    padding: 44px 18px 22px;
+  }
+
+  .gift-main-box {
+    padding: 18px 16px;
+    margin-bottom: 16px;
+  }
+
+  .gift-title {
+    font-size: 1.45rem;
+  }
+
+  .gift-subtitle {
+    margin-bottom: 16px;
+    font-size: 0.85rem;
+  }
+
+  .gift-name {
+    font-size: 1.2rem;
+  }
+
+  .gift-code-area {
+    padding: 6px 10px;
+  }
+
+  .gift-code-val {
+    font-size: 0.8rem;
+  }
+  
+  .gift-copy-btn {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
 }
